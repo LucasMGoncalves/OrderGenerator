@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OrderGenerator.Api/OrderGenerator.Api.csproj" />
+    <Project Path="src/OrderGenerator.Application/OrderGenerator.Application.csproj" />
+    <Project Path="src/OrderGenerator.Domain/OrderGenerator.Domain.csproj" />
+    <Project Path="src/OrderGenerator.Infrastructure/OrderGenerator.Infrastructure.csproj" />
+  </Folder>
+</Solution>
