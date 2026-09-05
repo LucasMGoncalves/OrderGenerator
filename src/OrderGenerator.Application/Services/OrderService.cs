@@ -8,10 +8,14 @@ namespace OrderGenerator.Application.Services
     public sealed class OrderService : IOrderService
     {
         private readonly ISymbolService _symbolService;
+        private readonly IFixOrderMessageService _fixOrderMessageService;
 
-        public OrderService(ISymbolService symbolService)
+        public OrderService(
+            ISymbolService symbolService,
+            IFixOrderMessageService fixOrderMessageService)
         {
             _symbolService = symbolService;
+            _fixOrderMessageService = fixOrderMessageService;
         }
 
         public async Task<CreateOrderResponse> CreateOrderAsync(
@@ -58,6 +62,11 @@ namespace OrderGenerator.Application.Services
                 throw new ArgumentException(
                     validationError);
             }
+
+            var fixMessage = await _fixOrderMessageService.CreateNewOrderSingle(order);
+            
+            //Apenas para facilitar o debug/testes 
+            //var redableFixMessage = fixMessage.Replace('\u0001', '|');
 
             return new CreateOrderResponse
             {

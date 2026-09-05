@@ -10,6 +10,7 @@ namespace OrderGenerator.Infrastructure
             this IServiceCollection services)
         {
             services.AddScoped<ISymbolService, SymbolService>();
+            services.AddScoped<IFixOrderMessageService, FixOrderMessageService>();
 
             return services;
         }
