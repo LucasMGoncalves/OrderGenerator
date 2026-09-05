@@ -9,13 +9,16 @@ namespace OrderGenerator.Application.Services
     {
         private readonly ISymbolService _symbolService;
         private readonly IFixOrderMessageService _fixOrderMessageService;
+        private readonly IOrderAccumulatorApiService _orderAccumulatorApiService;
 
         public OrderService(
             ISymbolService symbolService,
-            IFixOrderMessageService fixOrderMessageService)
+            IFixOrderMessageService fixOrderMessageService,
+            IOrderAccumulatorApiService orderAccumulatorApiService)
         {
             _symbolService = symbolService;
             _fixOrderMessageService = fixOrderMessageService;
+            _orderAccumulatorApiService = orderAccumulatorApiService;
         }
 
         public async Task<CreateOrderResponse> CreateOrderAsync(
@@ -64,9 +67,11 @@ namespace OrderGenerator.Application.Services
             }
 
             var fixMessage = await _fixOrderMessageService.CreateNewOrderSingle(order);
-            
+
             //Apenas para facilitar o debug/testes 
             //var redableFixMessage = fixMessage.Replace('\u0001', '|');
+
+            var response = await _orderAccumulatorApiService.SendOrderFixMessageAsync(fixMessage, cancellationToken);
 
             return new CreateOrderResponse
             {

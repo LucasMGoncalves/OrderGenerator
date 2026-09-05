@@ -35,7 +35,7 @@ builder.Services
     .AddMvc();
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services
     .AddAuthentication(
