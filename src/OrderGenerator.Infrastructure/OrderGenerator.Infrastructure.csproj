@@ -1,6 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <None Remove="Resources\FIX44.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\FIX44.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OrderGenerator.Application\OrderGenerator.Application.csproj" />
     <ProjectReference Include="..\OrderGenerator.Domain\OrderGenerator.Domain.csproj" />
   </ItemGroup>

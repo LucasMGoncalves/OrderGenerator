@@ -1,5 +1,5 @@
-﻿using OrderGenerator.Application.Interfaces;
-using System.Net.Http.Json;
+﻿using Microsoft.AspNetCore.Http;
+using OrderGenerator.Application.Interfaces;
 using System.Text;
 
 namespace OrderGenerator.Infrastructure.Integrations
@@ -7,32 +7,50 @@ namespace OrderGenerator.Infrastructure.Integrations
     public class ApiClient : IApiClient
     {
         private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ApiClient(HttpClient httpClient)
+        public ApiClient(
+            HttpClient httpClient,
+            IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<TResponse> PostAsync<TResponse>(
+        public async Task<string> PostAsync(
             string path,
             string content,
             string contentType,
             CancellationToken cancellationToken)
         {
-            using var requestContent = new StringContent(
+
+            using var request = new HttpRequestMessage(HttpMethod.Post, path);
+            
+            request.Content = new StringContent(
                 content,
                 Encoding.UTF8,
                 contentType);
 
-            using var response = await _httpClient.PostAsync(
-                path,
-                requestContent,
-                cancellationToken);
+            var authorization = _httpContextAccessor
+                .HttpContext?
+                .Request
+                .Headers
+                .Authorization
+                .ToString();
 
-            response.EnsureSuccessStatusCode();//TODO: [TEC] Verificar
+            if (!string.IsNullOrWhiteSpace(authorization))
+            {
+                request.Headers.TryAddWithoutValidation(
+                    "Authorization",
+                    authorization);
+            }
 
-            var responseContent = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken);
-            
+            using var response = await _httpClient.SendAsync(request, cancellationToken);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+
             return responseContent
                 ?? throw new InvalidOperationException("A API não retornou conteúdo.");
         }

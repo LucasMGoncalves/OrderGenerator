@@ -2,7 +2,7 @@
 {
     public interface IApiClient
     {
-        Task<TResponse> PostAsync<TResponse>(
+        Task<string> PostAsync(
             string path,
             string content,
             string contentType,

@@ -73,6 +73,14 @@ namespace OrderGenerator.Application.Services
 
             var response = await _orderAccumulatorApiService.SendOrderFixMessageAsync(fixMessage, cancellationToken);
 
+            if (!response.Accepted)
+            {
+                throw new InvalidOperationException(
+                    response.Text ??
+                    "A ordem foi rejeitada pelo OrderAccumulator."
+                );
+            }
+
             return new CreateOrderResponse
             {
                 Message = "Ordem criada com sucesso!"

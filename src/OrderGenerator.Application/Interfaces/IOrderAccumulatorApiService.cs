@@ -4,7 +4,7 @@ namespace OrderGenerator.Application.Interfaces
 {
     public interface IOrderAccumulatorApiService
     {
-        Task<OrderAccumulatorApiResponse> SendOrderFixMessageAsync(
+        Task<ExecutionReportResponse> SendOrderFixMessageAsync(
             string fixMessage,
             CancellationToken cancellationToken);
     }

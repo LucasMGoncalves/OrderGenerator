@@ -23,7 +23,7 @@ namespace OrderGenerator.Infrastructure
             {
                 var options = configuration.GetSection("OrderAccumulatorApi").Get<OrderAccumulatorApiOptions>();
                 client.BaseAddress = new Uri(options?.BaseUrl ?? throw new InvalidOperationException("AppSettings - OrderAccumulatorApi.BaseUrl não está configurado."));
-                client.Timeout = TimeSpan.FromSeconds(options?.TimeoutSeconds ?? 5);
+                client.Timeout = TimeSpan.FromMinutes(options?.TimeoutMinutes ?? 60);
             });
 
             return services;

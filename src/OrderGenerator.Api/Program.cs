@@ -9,59 +9,46 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<JwtOptions>(
-    builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
-var jwtOptions =
-    builder.Configuration
-        .GetSection("Jwt")
-        .Get<JwtOptions>()
-    ?? throw new InvalidOperationException(
-        "JWT configuration is missing.");
+var jwtOptions = builder.Configuration
+    .GetSection("Jwt")
+    .Get<JwtOptions>()
+    ?? throw new InvalidOperationException("Configuração JWT não encontrada.");
 
 builder.Services.AddControllers();
 
-builder.Services
-    .AddApiVersioning(options =>
-    {
-        options.DefaultApiVersion =
-            new ApiVersion(1.0);
-
-        options.AssumeDefaultVersionWhenUnspecified =
-            false;
-
-        options.ReportApiVersions = true;
-    })
-    .AddMvc();
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1.0);
+    
+    options.AssumeDefaultVersionWhenUnspecified = false;
+    
+    options.ReportApiVersions = true;
+}).AddMvc();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services
-    .AddAuthentication(
-        JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters =
-            new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = jwtOptions.Issuer,
-
-                ValidateAudience = true,
-                ValidAudience = jwtOptions.Audience,
-
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey =
-                    new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(
-                            jwtOptions.Key)),
-
-                ValidateLifetime = true,
-
-                ClockSkew = TimeSpan.Zero
-            };
-    });
+        ValidateIssuer = true,
+        ValidIssuer = jwtOptions.Issuer,
+        
+        ValidateAudience = true,
+        ValidAudience = jwtOptions.Audience,
+        
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtOptions.Key)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+    };
+});
 
 builder.Services.AddAuthorization();
 
