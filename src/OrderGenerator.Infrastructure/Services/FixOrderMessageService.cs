@@ -1,14 +1,12 @@
 ﻿using OrderGenerator.Application.Interfaces;
 using OrderGenerator.Domain.Entities;
 using OrderGenerator.Domain.Enum;
-using QuickFix;
 using QuickFix.Fields;
 using QuickFix.FIX44;
 
 namespace OrderGenerator.Infrastructure.Services
 {
-    public class FixOrderMessageService
-    : IFixOrderMessageService
+    public class FixOrderMessageService : IFixOrderMessageService
     {
         public Task<string> CreateNewOrderSingle(Order order)
         {
@@ -38,7 +36,7 @@ namespace OrderGenerator.Infrastructure.Services
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(side),
                     side,
-                    "LUnsupported order side.")
+                    "Lado não suportado.")
             };
         }
 

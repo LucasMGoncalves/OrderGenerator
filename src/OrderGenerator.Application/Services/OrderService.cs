@@ -31,24 +31,19 @@ namespace OrderGenerator.Application.Services
                     "Simbolo é obrigatório.");
             }
 
-            var symbolExists =
-                await _symbolService.IsValidAsync(
-                    request.Symbol,
-                    cancellationToken);
+            var symbolExists = await _symbolService.IsValidAsync(
+                request.Symbol,
+                cancellationToken);
 
             if (!symbolExists)
-            {
-                throw new ArgumentException(
-                    $"Simbolo '{request.Symbol}' não é válido.");
-            }
+                throw new ArgumentException($"Simbolo '{request.Symbol}' não é válido.");
 
             if (!Enum.TryParse<OrderSide>(
-                    request.Side,
-                    ignoreCase: true,
-                    out var side))
+                request.Side,
+                ignoreCase: true,
+                out var side))
             {
-                throw new ArgumentException(
-                    "Lado precisa ser BUY ou SELL.");
+                throw new ArgumentException("Lado precisa ser BUY ou SELL.");
             }
 
             var order = new Order(
@@ -57,14 +52,10 @@ namespace OrderGenerator.Application.Services
                 request.Amount,
                 request.Price);
 
-            var validationError =
-                order.Validate();
+            var validationError = order.Validate();
 
             if (validationError is not null)
-            {
-                throw new ArgumentException(
-                    validationError);
-            }
+                throw new ArgumentException(validationError);
 
             var fixMessage = await _fixOrderMessageService.CreateNewOrderSingle(order);
 
@@ -77,7 +68,7 @@ namespace OrderGenerator.Application.Services
             {
                 throw new InvalidOperationException(
                     response.Text ??
-                    "A ordem foi rejeitada pelo OrderAccumulator."
+                    "A ordem foi rejeitada."
                 );
             }
 

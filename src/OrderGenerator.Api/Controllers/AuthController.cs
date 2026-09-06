@@ -28,7 +28,7 @@ namespace OrderGenerator.Api.Controllers
             {
                 return BadRequest(new
                 {
-                    message = "Username is required."
+                    message = "Usuário é obrigatório."
                 });
             }
 

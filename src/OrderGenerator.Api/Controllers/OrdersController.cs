@@ -14,30 +14,24 @@ namespace OrderGenerator.Api.Controllers
     {
         private readonly IOrderService _orderService;
 
-        public OrdersController(
-            IOrderService orderService)
+        public OrdersController(IOrderService orderService)
         {
             _orderService = orderService;
         }
 
         [HttpPost("create")]
-        [ProducesResponseType(
-            typeof(CreateOrderResponse),
-            StatusCodes.Status200OK)]
-        [ProducesResponseType(
-            StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(
-            StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(CreateOrderResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateOrder(
             [FromBody] CreateOrderRequest request,
             CancellationToken cancellationToken)
         {
             try
             {
-                var response =
-                    await _orderService.CreateOrderAsync(
-                        request,
-                        cancellationToken);
+                var response = await _orderService.CreateOrderAsync(
+                    request,
+                    cancellationToken);
 
                 return Ok(response);
             }

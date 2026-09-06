@@ -13,19 +13,15 @@ namespace OrderGenerator.Api.Controllers
     {
         private readonly ISymbolService _symbolService;
 
-        public SymbolsController(
-            ISymbolService symbolService)
+        public SymbolsController(ISymbolService symbolService)
         {
             _symbolService = symbolService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSymbols(
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> GetSymbols(CancellationToken cancellationToken)
         {
-            var symbols =
-                await _symbolService.GetSymbolsAsync(
-                    cancellationToken);
+            var symbols = await _symbolService.GetSymbolsAsync(cancellationToken);
 
             return Ok(symbols);
         }

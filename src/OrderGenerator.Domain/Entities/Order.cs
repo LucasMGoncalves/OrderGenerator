@@ -28,7 +28,11 @@ namespace OrderGenerator.Domain.Entities
                 return "Simbolo é obrigatório.";
             }
 
-            if (Amount <= 0)
+            if (
+                Amount <= 0 ||
+                Amount >= 100_000 ||
+                Amount != decimal.Truncate(Amount)
+            )
             {
                 return "Quantidade deve ser maior que 0.";
             }
