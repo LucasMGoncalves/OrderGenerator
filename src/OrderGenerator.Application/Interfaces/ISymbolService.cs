@@ -1,14 +1,11 @@
-﻿using OrderGenerator.Application.DTOs;
+﻿using OrderGenerator.Domain.Entities;
 
 namespace OrderGenerator.Application.Interfaces
 {
     public interface ISymbolService
     {
-        Task<IReadOnlyCollection<SymbolResponse>> GetSymbolsAsync(
-            CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<Symbol>> GetSymbolsAsync(CancellationToken cancellationToken);
 
-        Task<bool> IsValidAsync(
-            string code,
-            CancellationToken cancellationToken);
+        Task<bool> IsValidAsync(string code, CancellationToken cancellationToken);
     }
 }
