@@ -5,7 +5,7 @@ using OrderGenerator.Domain.Enum;
 
 namespace OrderGenerator.Application.Services
 {
-    public sealed class OrderService : IOrderService
+    public class OrderService : IOrderService
     {
         private readonly ISymbolService _symbolService;
         private readonly IFixOrderMessageService _fixOrderMessageService;

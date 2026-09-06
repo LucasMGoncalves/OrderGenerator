@@ -8,7 +8,7 @@ using Xunit;
 
 namespace OrderGenerator.Tests.Application
 {
-    public sealed class OrderServiceTests
+    public class OrderServiceTests
     {
         private readonly Mock<ISymbolService> _symbolServiceMock;
         private readonly Mock<IFixOrderMessageService> _fixOrderMessageServiceMock;

@@ -7,7 +7,7 @@ using QuickFix.Fields;
 
 namespace OrderGenerator.Infrastructure.Integrations
 {
-    public sealed class OrderAccumulatorApiService : IOrderAccumulatorApiService
+    public class OrderAccumulatorApiService : IOrderAccumulatorApiService
     {
         private readonly IApiClient _apiClient;
         private readonly OrderAccumulatorApiOptions _options;
