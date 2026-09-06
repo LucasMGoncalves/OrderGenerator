@@ -5,4 +5,7 @@
     <Project Path="src/OrderGenerator.Domain/OrderGenerator.Domain.csproj" />
     <Project Path="src/OrderGenerator.Infrastructure/OrderGenerator.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OrderGenerator.Tests/OrderGenerator.Tests.csproj" />
+  </Folder>
 </Solution>
